@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  flask_web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment: 
+      - FLASK_APP=server.py
+      - FLASK_ENV=development
+    volumes: 
+      - '.:/code'
+  redis:
+    image: "redis:alpine"

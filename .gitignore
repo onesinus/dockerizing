@@ -1,0 +1,5 @@
+# For Node JS
+node_modules
+
+# For Python
+__pycache__
