@@ -4,3 +4,16 @@ services:
     build: .
     ports:
       - "8080:8080"
+  mysql:
+    container_name: db
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: barbar
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
