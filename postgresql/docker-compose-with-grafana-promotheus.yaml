@@ -1,0 +1,47 @@
+version: '3.1'
+
+services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana      
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+  db:
+    container_name: db-temp
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: example
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5433:5432      
+    volumes:
+      - ./init-user-db.sh:/docker-entrypoint-initdb.d/init-database.sh
+      - db-data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8070:8080
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://example:example@db:5432/example?sslmode=disable"
+    links:
+      - db
+      - prometheus
+
+volumes:
+  db-data:
+  grafana-storage:
