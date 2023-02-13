@@ -1,0 +1,25 @@
+Masuk ke file sh yang disediakan kafka  
+    => cd /opt/bitnami/kafka/bin/
+
+================================================================================== List of sh file provided by kafka =================================================
+connect-distributed.sh        kafka-console-consumer.sh    kafka-features.sh         kafka-producer-perf-test.sh    kafka-streams-application-reset.sh  zookeeper-security-migration.sh
+connect-mirror-maker.sh       kafka-console-producer.sh    kafka-get-offsets.sh      kafka-reassign-partitions.sh   kafka-topics.sh                     zookeeper-server-start.sh
+connect-standalone.sh         kafka-consumer-groups.sh     kafka-leader-election.sh  kafka-replica-verification.sh  kafka-transactions.sh               zookeeper-server-stop.sh
+kafka-acls.sh                 kafka-consumer-perf-test.sh  kafka-log-dirs.sh         kafka-run-class.sh             kafka-verifiable-consumer.sh        zookeeper-shell.sh
+kafka-broker-api-versions.sh  kafka-delegation-tokens.sh   kafka-metadata-quorum.sh  kafka-server-start.sh          kafka-verifiable-producer.sh
+kafka-cluster.sh              kafka-delete-records.sh      kafka-metadata-shell.sh   kafka-server-stop.sh           trogdor.sh
+kafka-configs.sh              kafka-dump-log.sh            kafka-mirror-maker.sh     kafka-storage.sh               windows
+======================================================================================================================================================================
+
+
+Membuat Topic 
+    => ./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic my-topic-1
+
+Melihat daftar topic yang ada 
+    => ./kafka-topics.sh --bootstrap-server kafka:9092 --list
+
+Produce Message
+    => ./kafka-console-producer.sh --bootstrap-server kafka:9092 --topic my-topic-1
+
+Consume Message
+    => ./kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic my-topic-1 --from-beginning
