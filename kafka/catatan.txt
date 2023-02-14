@@ -23,3 +23,10 @@ Produce Message
 
 Consume Message
     => ./kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic my-topic-1 --from-beginning
+
+
+Get Broker version information
+    => ./kafka-broker-api-versions.sh --bootstrap-server kafka:9092
+
+Check Active Broker
+    => ./zookeeper-shell.sh zookeeper:2181 ls /brokers/ids
