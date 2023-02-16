@@ -3,3 +3,4 @@ log_bin=/var/log/mysql/mysql-bin.log
 max_binlog_size=100M
 expire_logs_days=7
 binlog_format = mixed
+# binlog-format    = row #Very important if you want to receive write, update and delete row events
