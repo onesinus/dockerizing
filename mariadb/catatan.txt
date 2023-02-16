@@ -1,0 +1,12 @@
+Menampilkan variable terkait log_bin (untuk check bin log udah aktif atau belum)
+    => show variables like '%log_bin%';
+
+Menampilkan list binary log
+    => show binary logs;
+
+Perintah untuk bermain dengan file bin log
+    mysqlbinlog --no-defaults /var/log/mysql/mysql-bin.000001
+    mysqlbinlog --no-defaults -d testdb /var/log/mysql/mysql-bin.000001 > testdb.txt
+    mysqlbinlog --no-defaults -s /var/log/mysql/mysql-bin.000001
+    mysqlbinlog --no-defaults -d testdb -s /var/log/mysql/mysql-bin.000001
+    mysqlbinlog --no-defaults -D /var/log/mysql/mysql-bin.000001
