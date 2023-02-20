@@ -1,0 +1,57 @@
+curl -H "Accept:application/json" localhost:8083/
+
+curl -H 'Content-Type: application/json' kafka-connect:8083/connectors --data '
+{
+  "name": "shipments-connector",  
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector", 
+    "plugin.name": "pgoutput",
+    "database.hostname": "postgres", 
+    "database.port": "5432", 
+    "database.user": "postgresuser", 
+    "database.password": "postgrespw", 
+    "database.dbname" : "shipment_db", 
+    "database.server.name": "postgres", 
+    "table.include.list": "public.shipments" 
+  }
+}'
+
+
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d '
+{ 
+  "name": "inventory-connector", 
+  "config": { 
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector", 
+    "tasks.max": "1", 
+    "database.hostname": "mysql", 
+    "database.port": "3306", 
+    "database.user": "debezium", 
+    "database.password": "dbz", 
+    "database.server.id": "184054", 
+    "database.server.name": "dbserver1", 
+    "database.whitelist": "inventory", 
+    "database.history.kafka.bootstrap.servers": "kafka:9092", 
+    "database.history.kafka.topic": "dbhistory.inventory" 
+  }
+}
+'
+
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d '
+{ 
+  "name": "person-connector", 
+  "config": { 
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector", 
+    "tasks.max": "1", 
+    "database.hostname": "34.101.224.66", 
+    "database.port": "6033", 
+    "database.user": "root", 
+    "database.password": "example", 
+    "database.server.id": "1", 
+    "database.server.name": "7cd97cc8c3a3",
+    "database.whitelist": "test", 
+    "database.history.kafka.bootstrap.servers": "localhost:9092", 
+    "database.history.kafka.topic": "topic-1",
+    "topic.prefix": "person" 
+  }
+}
+'
