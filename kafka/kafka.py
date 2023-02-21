@@ -26,12 +26,14 @@ services:
     volumes:
       - "kafka_data:/bitnami"
     environment:
+      # - KAFKA_BROKER_ID=1
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes # For safety reasons, do not use this flag in a production environment.
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       - KAFKA_CFG_LISTENERS=INSIDE://:9092,OUTSIDE://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=INSIDE://kafka:9092,OUTSIDE://<your_kafka_ip_address>:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INSIDE://kafka:9092,OUTSIDE://<ip_address_where_kafka_is_located>:9093
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INSIDE
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
   init-kafka:
     container_name: init-kafka
     image: confluentinc/cp-kafka:6.1.1
@@ -44,10 +46,9 @@ services:
       kafka-topics --bootstrap-server kafka:9092 --list
 
       # echo -e 'Creating kafka topics....'
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic topic-1 --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic topic-2 --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic config-storage-topic --replication-factor 1 --partitions 1 --config cleanup.policy=compact
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic offset-storage-topic --replication-factor 1 --partitions 25 --config cleanup.policy=compact --config min.cleanable.dirty.ratio=0.001 --config segment.ms=5000
+      # kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic person --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic connect-configs --replication-factor 1 --partitions 1 --config cleanup.policy=compact
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic connect-offsets --replication-factor 1 --partitions 25 --config cleanup.policy=compact --config min.cleanable.dirty.ratio=0.001 --config segment.ms=5000
 
       # echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:9092 --list
@@ -59,10 +60,9 @@ services:
       - "8083:8083"
     environment:
       - GROUP_ID=group-id-nih-bos
-      - CONFIG_STORAGE_TOPIC=config-storage-topic
-      - OFFSET_STORAGE_TOPIC=offset-storage-topic
-      - STATUS_STORAGE_TOPIC=connect-status-topic
-      - BOOTSTRAP_SERVERS=<your_kafka_ip_address>:9093
+      - CONFIG_STORAGE_TOPIC=connect-configs
+      - OFFSET_STORAGE_TOPIC=connect-offsets
+      - BOOTSTRAP_SERVERS=kafka:9092
     depends_on:
       - kafka
 volumes:
