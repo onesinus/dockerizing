@@ -3,3 +3,6 @@ node_modules
 
 # For Python
 __pycache__
+
+# Pycharm
+.idea
