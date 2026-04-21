@@ -1,0 +1,16 @@
+!!! Use this wisely and at your own risk.
+
+# Remove dangling images
+docker images -qf dangling=true | xargs docker rmi
+
+# Remove dangling volumes
+docker volume ls -qf dangling=true | xargs -r docker volume rm
+
+# docker image remove based on string matching
+docker images | grep "dkr.ecr.us-east-" | awk '{print $3}' | xargs docker rmi
+
+# docker image remove based on matching tags: 
+docker images | grep "dkr.ecr.us-east-" | awk '{print $1 ":" $2}' | xargs docker rmi
+
+# docker image remove based on matching tags: 
+docker images | grep "cdkasset-" | awk '{print $1 ":" $2}' | xargs docker rmi
