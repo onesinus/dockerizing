@@ -14,3 +14,11 @@ docker images | grep "dkr.ecr.us-east-" | awk '{print $1 ":" $2}' | xargs docker
 
 # docker image remove based on matching tags: 
 docker images | grep "cdkasset-" | awk '{print $1 ":" $2}' | xargs docker rmi
+
+
+----
+# Remove unused images
+docker image prune -a
+
+# Remove build cache (largest gain)
+docker builder prune -a
