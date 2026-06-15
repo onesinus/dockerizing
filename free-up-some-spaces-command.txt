@@ -22,3 +22,6 @@ docker image prune -a
 
 # Remove build cache (largest gain)
 docker builder prune -a
+
+# Remove all following docker compose file configuration
+docker compose down -v --rmi all --remove-orphans
